@@ -41,7 +41,9 @@ public class BlogDAOImplTest {
 	@Ignore
 	@Test
 	public void testDeleteBlog() {
-		fail("Not yet implemented");
+		Blog nblog=blogDAO.getBlog(1);
+		
+		assertTrue("Had some issue during deleting a blog",blogDAO.deleteBlog(nblog));
 	}
 
 	@Ignore

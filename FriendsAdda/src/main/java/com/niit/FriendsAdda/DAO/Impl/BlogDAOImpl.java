@@ -2,6 +2,7 @@ package com.niit.FriendsAdda.DAO.Impl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +103,9 @@ public class BlogDAOImpl implements BlogDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Blog> listBlog(String username) {
+		Session session=sessionFactory.openSession();
+		Query query=session.createQuery("from Blog where username:username");
+		
 		List<Blog> list = sessionFactory.getCurrentSession().createQuery("from Blog where username:username").setParameter("username", username).list();	
 		return list;
 	}
