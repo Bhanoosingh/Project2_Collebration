@@ -7,13 +7,14 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
-<meta name="author" content="">
+<meta name="author" content="Bhanoo Pratap Singh">
 
-<title>Blog Home</title>
+<title>Blog Home - Start Bootstrap Template</title>
 
 <!-- Bootstrap core CSS -->
-<link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/bootstrap-grid.min.css" rel="stylesheet">
+<link href="assets/css/bootstrap-reboot.min.css" rel="stylesheet">
 <!-- Custom styles for this template -->
 <link href="assets/css/blog-home.css" rel="stylesheet">
 
@@ -24,7 +25,7 @@
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="#">SinglePageApplication</a>
+			<a class="navbar-brand" href="#">Friends Adda</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -32,43 +33,101 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item active"><a class="nav-link" href="#!">Home
-							<span class="sr-only">(current)</span>
-					</a></li>
-					<li class="nav-item"><a class="nav-link" href="#!friend">Friend</a>
+					<li class="nav-item"><a class="nav-link" href="#!">Home</a></li>
+					<li class="nav-item"
+						ng-show="currentUser.role=='USER'||currentUser.role=='Role_Admin'"><a
+						class="nav-link" href="#!forum">Forum</a></li>
+					<li class="nav-item"
+						ng-show="currentUser.role=='USER'||currentUser.role=='Role_Admin'"><a
+						class="nav-link" href="#!job">Job</a></li>
+					<li class="nav-item"
+						ng-hide="currentUser.role=='Role_User'||currentUser.role=='Role_Admin'"><a
+						class="nav-link" href="#!about">About Us</a></li>
+					<li class="nav-item"
+						ng-hide="currentUser.role=='Role_User'||currentUser.role=='Role_Admin'"><a
+						class="nav-link" href="#!contact">Contact Us</a></li>
+					<!-- <li class="nav-item" ng-show="currentUser.role=='Role_User'||currentUser.role=='Role_Admin'"><a class="nav-link" href="#!uploadProfilePicture">Upload Profile Picture</a></li> -->
+					<li class="nav-item"
+						ng-hide="currentUser.role=='USER'||currentUser.role=='Admin'"><a
+						class="nav-link" href="#!login">Login</a></li>
+					<li class="nav-item"
+						ng-hide="currentUser.role=='USER'||currentUser.role=='Admin'"><a
+						class="nav-link" href="#!register">Register</a></li>
+					<li class="nav-item dropdown" ng-show="currentUser.role=='USER'">
+						<button class="btn dropdown-toggle" type="button"
+							id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false">Blog</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+							<li><a class="dropdown-item" href="#!addBlog">Add Blog</a></li>
+							<li><a class="dropdown-item" href="#!updateBlog">Update
+									Blog</a></li>
+							<li><a class="dropdown-item" href="#!blog">Show Blog</a></li>
+						</ul>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#!blog">Blog</a>
+					<li class="nav-item dropdown" ng-show="currentUser.role=='USER'">
+						<button class="btn dropdown-toggle" type="button"
+							id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false">Profile</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
+							<li><a class="dropdown-item" href="#!displayProfile">View
+									Profile</a></li>
+							<li><a class="dropdown-item" href="#">Update Profile</a></li>
+							<li><a class="dropdown-item" href="#!uploadProfilePicture">Upload
+									Profile Picture</a></li>
+						</ul>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#!job">Job</a>
-					</li>
+					<li calss="nav-item"
+						ng-show="currentUser.role=='ROLE_USER'||currentUser.role=='ROLE_ADMIN'"><a
+						class="nav-link" href="#!Chat">Chat</a></li>
 				</ul>
+
+				<ul class="nav navbar-nav navbar-right dropdown"
+					ng-hide="currentUser==undefined">
+					<li class="nav-item"><a class="dropdown-toggle nav-link"
+						href="#!" data-toggle="dropdown">Welcome {{currentUser.name}}</a>
+						<ul class="dropdown-menu" ng-controller="UserController">
+
+							<li><a href="#" ng-click="logout()">Log Out</a></li>
+							<li><a href="#!uploadProfilePicture">Upload Profile
+									Picture</a></li>
+						</ul></li>
+					<li><img class="nav-link" id="img1"
+						ng-hide="currentUser==undefined"
+						src="http://localhost:8081/FriendsAddaMiddleware/getImage/{{currentUser.email}}"
+						alt="avatar" onerror="this.src='assets/images/user.png'" height="50" width="50"></li>
+				</ul>
+
 			</div>
 		</div>
 	</nav>
 
 	<!-- Page Content -->
-	<div class="container">
-		<div class="row" ng-view>
-			
-		</div>
-	</div>
+	<div class="container" ng-view></div>
 	<!-- /.container -->
 
 	<!-- Footer -->
-	<footer class="py-5 bg-dark fixed-bottom">
+	<footer class="py-5 bg-dark">
 		<div class="container">
 			<p class="m-0 text-center text-white">Copyright &copy; Your
-				FriendsAdda 2018</p>
+				Website 2018</p>
 		</div>
 		<!-- /.container -->
 	</footer>
 
 	<!-- Bootstrap core JavaScript -->
-	<script src="assets/vendor/jquery/jquery.min.js"></script>
-	<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<script type="text/javascript" src="assets/lib/angular.min.js"></script>
-	<script type="text/javascript" src="assets/lib/angular-route.min.js"></script>
-	<script type="text/javascript" src="assets/js/app.js"></script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/angular.min.js"></script>
+
+
+	<script src="assets/js/angular-route.js"></script>
+	<script src="assets/js/angular-cookies.js"></script>
+	<script src="assets/js/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+
+	<script src="assets/js/myapp.js"></script>
+	<script src="c_user/UserController.js"></script>
+	<script src="c_blog/BlogController.js"></script>
+
 </body>
 
 </html>

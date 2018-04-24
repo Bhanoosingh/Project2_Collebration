@@ -1,7 +1,6 @@
 package com.niit.FriendsAdda.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,32 +9,31 @@ import javax.persistence.Table;
 public class UserDetail {
 	
 	@Id
-	@GeneratedValue
-	int userId;
-	String userName;
-	String email;
-	String password;
-	int mobileNo;
-	String address;
-	boolean enable;
-	
-	public int getUserId() {
-		return userId;
+	private String email;
+	private String name;
+	private String password;
+	private String address;
+	private String phone;
+	private String isOnline;
+	private String role;
+
+	public String getRole() {
+		return role;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setRole(String role) {
+		this.role = role;
 	}
-	public String getUserName() {
-		return userName;
+	public String getIsOnline() {
+		return isOnline;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setIsOnline(String isOnline) {
+		this.isOnline = isOnline;
 	}
-	public String getEmail() {
-		return email;
+	public String getName() {
+		return name;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getPassword() {
 		return password;
@@ -43,11 +41,11 @@ public class UserDetail {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public int getMobileNo() {
-		return mobileNo;
+	public String getEmail() {
+		return email;
 	}
-	public void setMobileNo(int mobileNo) {
-		this.mobileNo = mobileNo;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getAddress() {
 		return address;
@@ -55,12 +53,11 @@ public class UserDetail {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public boolean isEnable() {
-		return enable;
+	public String getPhone() {
+		return phone;
 	}
-	public void setEnable(boolean enable) {
-		this.enable = enable;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	
-
 }

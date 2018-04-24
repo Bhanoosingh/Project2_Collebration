@@ -1,5 +1,6 @@
 package com.niit.FriendsAdda.DAO.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -11,63 +12,65 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.niit.FriendsAdda.DAO.BlogDAO;
 import com.niit.FriendsAdda.model.Blog;
+import com.niit.FriendsAdda.model.BlogComment;
 
-@Repository("blogDAO")
-public class BlogDAOImpl implements BlogDAO {
+@Repository
+public class BlogDAOImpl implements BlogDAO{
 
 	@Autowired
 	SessionFactory sessionFactory;
-	
-	
+
+	@Autowired
+	public BlogDAOImpl(SessionFactory sessionFactory) {
+		
+		super();
+		this.sessionFactory = sessionFactory;
+	}
 	
 	@Transactional
 	@Override
 	public boolean addBlog(Blog blog) {
-		try{
+		
+		try {
 			sessionFactory.getCurrentSession().save(blog);
 			return true;
-		}
-		catch(Exception e){
-			System.out.println("-----------------Exception--------------\n\n"+e);
+		}catch(Exception exception) {
 			return false;
 		}
 	}
-	
+
 	@Transactional
 	@Override
 	public boolean deleteBlog(Blog blog) {
-		try{
+		
+		try {
 			sessionFactory.getCurrentSession().delete(blog);
 			return true;
-		}
-		catch(Exception e){
-			System.out.println("-----------------Exception--------------\n\n"+e);
+		}catch(Exception exception) {
 			return false;
 		}
 	}
-	
+
 	@Transactional
 	@Override
 	public boolean updateBlog(Blog blog) {
-		try{
+
+		try {
 			sessionFactory.getCurrentSession().update(blog);
 			return true;
-		}
-		catch(Exception e){
-			System.out.println("-----------------Exception--------------\n\n"+e);
+		}catch(Exception exception) {
 			return false;
 		}
 	}
 
 	@Override
 	public Blog getBlog(int blogId) {
-		try{
-			Session session=sessionFactory.openSession();
-			Blog blog=session.get(Blog.class,blogId);
+		
+		try {
+			Session session = sessionFactory.openSession();
+			Blog blog = session.get(Blog.class, blogId);
 			return blog;
-		}
-		catch(Exception e){
-			System.out.println("-----------------Exception--------------\n\n"+e);
+		}catch(Exception exception) {
 			return null;
 		}
 	}
@@ -75,39 +78,104 @@ public class BlogDAOImpl implements BlogDAO {
 	@Transactional
 	@Override
 	public boolean approveBlog(Blog blog) {
-		try{
+		
+		try {
+			
 			blog.setStatus("A");
 			sessionFactory.getCurrentSession().update(blog);
 			return true;
-			}
-			catch(Exception e){
-				System.out.println("-----------------Exception--------------\n\n"+e);
+		}catch(Exception exception) {
 			return false;
-			}
+		}
+	}
+	
+	@Transactional
+	@Override
+	public boolean rejectBlog(Blog blog) {
+		
+		try {
+			
+			blog.setStatus("NA");
+			sessionFactory.getCurrentSession().update(blog);
+			return true;
+		}catch(Exception exception) {
+			return false;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Blog> listBlog(String userName){
+		
+		try {
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			List<Blog> blogList = new ArrayList<Blog>();
+			Query query = session.createQuery("FROM Blog where username=:username").setString("username",userName);
+			blogList = query.list();
+			return blogList;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public boolean incrementLike(Blog blog) {
+		
+		try {
+			
+			int likes = blog.getLikes();
+			likes++;
+			blog.setLikes(likes);
+			sessionFactory.getCurrentSession().update(blog);
+			return true;
+		}catch(Exception ex) {
+			
+			return false;
+		}
 	}
 
 	@Transactional
 	@Override
-	public boolean rejectBlog(Blog blog) {
-		try{
-			blog.setStatus("NA");
-			sessionFactory.getCurrentSession().update(blog);
+	public boolean addBlogComment(BlogComment blogComment) {
+		try {
+			sessionFactory.getCurrentSession().saveOrUpdate(blogComment);
 			return true;
-			}
-			catch(Exception e){
-				System.out.println("-----------------Exception--------------\n\n"+e);
+		} catch (Exception e) {
 			return false;
-			}
+		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@Transactional
 	@Override
-	public List<Blog> listBlog(String username) {
-		Session session=sessionFactory.openSession();
-		Query query=session.createQuery("from Blog where username:username");
-		
-		List<Blog> list = sessionFactory.getCurrentSession().createQuery("from Blog where username:username").setParameter("username", username).list();	
-		return list;
+	public boolean deleteBlogComment(BlogComment blogComment) {
+		try {
+			sessionFactory.getCurrentSession().delete(blogComment);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
+	@Override
+	public BlogComment getBlogComment(int commentId) {
+		try {
+			Session session = sessionFactory.openSession();
+			BlogComment blogComment = session.get(BlogComment.class,commentId);
+			return blogComment;
+		} catch (Exception e) {
+			return null;
+		} 
+	}
+
+	@Override
+	public List<BlogComment> listBlogComments(int blogid) {
+		Session session=sessionFactory.openSession();
+		Query query=session.createQuery("from BlogComment where blogId=:blogId");
+		query.setParameter("blogId", new Integer(blogid));
+		@SuppressWarnings("unchecked")
+		List<BlogComment> listBlogComments=query.list();
+		return listBlogComments;
+	}
+	
 }

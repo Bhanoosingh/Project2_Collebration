@@ -1,7 +1,9 @@
 package com.niit.FriendsAdda.DAO.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,21 +12,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.niit.FriendsAdda.DAO.ForumDAO;
 import com.niit.FriendsAdda.model.Forum;
+import com.niit.FriendsAdda.model.ForumComment;
 
-@Repository("forumDAO")
+@Repository
 public class ForumDAOImpl implements ForumDAO {
 
 	@Autowired
 	SessionFactory sessionFactory;
-
+	
 	@Transactional
 	@Override
 	public boolean addForum(Forum forum) {
+		
 		try {
 			sessionFactory.getCurrentSession().save(forum);
 			return true;
-		} catch (Exception e) {
-			System.out.println("-----------------Exception--------------\n\n"+e);
+		}catch(Exception exception) {
 			return false;
 		}
 	}
@@ -32,11 +35,11 @@ public class ForumDAOImpl implements ForumDAO {
 	@Transactional
 	@Override
 	public boolean deleteForum(Forum forum) {
+
 		try {
 			sessionFactory.getCurrentSession().delete(forum);
 			return true;
-		} catch (Exception e) {
-			System.out.println("-----------------Exception--------------\n\n"+e);
+		}catch(Exception exception) {
 			return false;
 		}
 	}
@@ -44,26 +47,39 @@ public class ForumDAOImpl implements ForumDAO {
 	@Transactional
 	@Override
 	public boolean updateForum(Forum forum) {
+		
 		try {
 			sessionFactory.getCurrentSession().update(forum);
 			return true;
-		} catch (Exception e) {
-			System.out.println("-----------------Exception--------------\n\n"+e);
+		}catch(Exception exception) {
 			return false;
 		}
 	}
 
-	@Transactional
 	@Override
 	public Forum getForum(int forumId) {
+		
 		try {
 			Session session = sessionFactory.openSession();
-
 			Forum forum = session.get(Forum.class, forumId);
-			session.close();
 			return forum;
+		}catch(Exception exception) {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Forum> listForum(String userName) {
+		
+		try {
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			List<Forum> forumList = new ArrayList<Forum>();
+			Query query = session.createQuery("FROM Forum where username=:username").setString("username",userName);
+			forumList = query.list();
+			return forumList;
 		} catch (Exception e) {
-			System.out.println("-----------------Exception--------------\n\n"+e);
 			return null;
 		}
 	}
@@ -71,9 +87,36 @@ public class ForumDAOImpl implements ForumDAO {
 	@Transactional
 	@Override
 	public boolean approveForum(Forum forum) {
+		
 		try {
+			
 			forum.setStatus("A");
 			sessionFactory.getCurrentSession().update(forum);
+			return true;
+		}catch(Exception exception) {
+			return false;
+		}
+	}
+
+	@Transactional
+	@Override
+	public boolean rejectForum(Forum forum) {
+
+		try {
+			
+			forum.setStatus("A");
+			sessionFactory.getCurrentSession().update(forum);
+			return true;
+		}catch(Exception exception) {
+			return false;
+		}
+	}
+
+	@Transactional
+	@Override
+	public boolean addForumDiscussion(ForumComment forumComment) {
+		try {
+			sessionFactory.getCurrentSession().saveOrUpdate(forumComment);
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -82,25 +125,34 @@ public class ForumDAOImpl implements ForumDAO {
 
 	@Transactional
 	@Override
-	public boolean rejectForum(Forum forum) {
+	public boolean deleteForumDiscussion(ForumComment forumComment) {
 		try {
-			forum.setStatus("NA");
-			sessionFactory.getCurrentSession().update(forum);
+			sessionFactory.getCurrentSession().delete(forumComment);
 			return true;
 		} catch (Exception e) {
-			System.out.println("-----------------Exception--------------\n\n"+e);
 			return false;
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<Forum> listForum(String username) {
-		Session session = sessionFactory.openSession();
+	public ForumComment getForumDiscussion(int discussionId) {
+		try {
+			Session session = sessionFactory.openSession();
+			ForumComment forumComment = session.get(ForumComment.class, discussionId);
+			return forumComment;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
-		List<Forum> forumList = session.createQuery("from Forum where username = :username").setParameter("name", username).list();// user1 is a preexisting user
-		
-		return forumList;
+	@Override
+	public List<ForumComment> listForumDiscussion(int forumid) {
+		Session session = sessionFactory.openSession();
+		Query query = session.createQuery("from ForumComment where forumId=:forumId");
+		query.setParameter("forumId", new Integer(forumid));
+		@SuppressWarnings("unchecked")
+		List<ForumComment> listForumComments = query.list();
+		return listForumComments;
 	}
 
 }

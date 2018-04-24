@@ -4,21 +4,34 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 @Entity
-@Table
+@Table(name="Forum")
+@SequenceGenerator(name="forumidseq", sequenceName="forum_id_seq")
 public class Forum {
+
 	@Id
-	@GeneratedValue
-	int forumId;
-	String forumName;
-	String forumContent;
-	Date createdate;
-	String username;
-	String status;
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="forumidseq")
+	private int forumId;
+	private String forumName;
+	private String forumContent;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+	private Date createDate;
+	private String userName;
+	private String status;
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public int getForumId() {
 		return forumId;
 	}
@@ -37,23 +50,17 @@ public class Forum {
 	public void setForumContent(String forumContent) {
 		this.forumContent = forumContent;
 	}
-	public Date getCreatedate() {
-		return createdate;
+	public Date getCreatedDate() {
+		return createDate;
 	}
-	public void setCreatedate(Date createdate) {
-		this.createdate = createdate;
+	public void setCreatedDate(Date createdDate) {
+		this.createDate = createdDate;
 	}
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 }

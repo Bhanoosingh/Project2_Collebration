@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Blog</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body ng-app="myApp">
+
+	<div class="container-fluid" ng-controller="BlogController">
+		<div class="row">
+			<div class="col-md-12">
+				<form id="blogform" method="post">
+
+
+					<h3>List of Created Blogs</h3>
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>BlogName</th>
+								<th>BlogContent</th>
+								<th>Likes</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="blog in blogData">
+								<td>{{blog.blogName}}</td>
+								<td>{{blog.blogContent}}</td>
+								<td>{{blog.likes}}</td>
+								<td><input type="submit"
+									class="btn btn-primary" value="LIKES"
+									ng-click="incrementLike(blog.blogId)" />
+									<input type="submit" class="btn btn-primary"
+									value="EDIT BLOG" ng-click="editBlog(blog.blogId)" /> <input
+									type="submit" class="btn btn-primary" value="DELETE BLOG"
+									ng-click="deleteBlog(blog.blogId)" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="c_blog/BlogController.js"></script>
+
+	<script
+		src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-cookies.js"></script>
+</body>
+</html>

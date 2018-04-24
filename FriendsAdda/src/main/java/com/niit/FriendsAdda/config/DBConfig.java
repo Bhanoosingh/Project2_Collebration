@@ -21,9 +21,13 @@ import com.niit.FriendsAdda.DAO.Impl.BlogDAOImpl;
 import com.niit.FriendsAdda.DAO.Impl.ForumDAOImpl;
 import com.niit.FriendsAdda.DAO.Impl.JobDAOImpl;
 import com.niit.FriendsAdda.DAO.Impl.UserDAOImpl;
+import com.niit.FriendsAdda.model.ApplyJob;
 import com.niit.FriendsAdda.model.Blog;
+import com.niit.FriendsAdda.model.BlogComment;
 import com.niit.FriendsAdda.model.Forum;
+import com.niit.FriendsAdda.model.ForumComment;
 import com.niit.FriendsAdda.model.Job;
+import com.niit.FriendsAdda.model.ProfilePicture;
 import com.niit.FriendsAdda.model.UserDetail;
 
 @Configuration
@@ -67,6 +71,10 @@ public class DBConfig {
 		sessionFactoryBuilder.addAnnotatedClasses(Forum.class);
 		sessionFactoryBuilder.addAnnotatedClasses(Job.class);
 		sessionFactoryBuilder.addAnnotatedClasses(UserDetail.class);
+		sessionFactoryBuilder.addAnnotatedClasses(ApplyJob.class);
+		sessionFactoryBuilder.addAnnotatedClasses(BlogComment.class);
+		sessionFactoryBuilder.addAnnotatedClasses(ForumComment.class);
+		sessionFactoryBuilder.addAnnotatedClasses(ProfilePicture.class);
 		
 		SessionFactory sessionFactory=sessionFactoryBuilder.buildSessionFactory();
 		
@@ -90,7 +98,7 @@ public class DBConfig {
 	@Bean("blogDAO")
 	public BlogDAO getBlogDAO(){
 		System.out.println("This is a BlogDAOImpl Object");
-		return new BlogDAOImpl();
+		return new BlogDAOImpl(getSessionFactory());
 	}
 	@Bean("forumDAO")
 	public ForumDAO getForumDAO(){

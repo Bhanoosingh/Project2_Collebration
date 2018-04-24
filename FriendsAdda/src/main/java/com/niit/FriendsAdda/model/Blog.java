@@ -1,30 +1,40 @@
 package com.niit.FriendsAdda.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
-@Table
-public class Blog implements Serializable {
-	
-	
-	private static final long serialVersionUID = 1L;
+@Table(name="Blog")
+@SequenceGenerator(name="blogidseq", sequenceName="blog_id_seq")
+public class Blog {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="blogidseq")
 	int blogId;
-	private String blogName;
-	private String blogContent;
-	private Date createDate;
-	private String username;
-	private String status;
 	
-	//Getter Setters
+	String blogName;
+	String blogContent;
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+	Date createDate;
+	String userName;
+	String status;
+	int likes; 
+	
+	public int getLikes() {
+		return likes;
+	}
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
 	public int getBlogId() {
 		return blogId;
 	}
@@ -49,17 +59,16 @@ public class Blog implements Serializable {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
+	}	
 }

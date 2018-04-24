@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Update Blog</title>
+<link
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="c_blog/BlogController.js"></script>
+	<script src="assets/js/codewarriors.js"></script>
+	<style>
+		.btn {
+			background-color: DodgerBlue;
+			border: none;
+			color: white;
+			padding: 12px 16px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+		/* Darker background on mouse-over */
+		.btn:hover {
+			background-color: Black;
+		}
+		body {
+			margin: 0;
+			padding: 0;
+			
+			font-size: 16px;
+			color: #222;
+			font-family: COTILLIO, sans-serif;
+			font-weight: 300;
+		}
+		#blog-box {
+			position: relative;
+			margin: 5% auto;
+			width: 900px;
+			height: 400px;
+			border-radius: 2px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+		}
+	</style>
+</head>
+
+<body ng-app="myApp">
+	<font color="white" face="verdana">
+		<div id="blog-box" class="row" ng-controller="BlogController">
+			<div>
+				<font color="white" face="Edwardian Script ITC">
+					<h1 class="text-center">Update Blog</h1>
+				</font>
+			</div>
+			<form class="col-md-12 center-block" id="blogForm" method="POST">
+				<div class="form-group">
+					<input type="text" class="form-control input-lg" name="blogName"
+						placeholder="Blog name" ng-model="blog.blogName" /><font
+						face="Forte"></font>
+				</div>
+				<div class="form-group">
+					<textarea class="form-control input-lg" rows="3" name="blogContent"
+						placeholder="Blog content" ng-model="blog.blogContent"></textarea>
+				</div>
+				<div class=form-group>
+					<input type="submit" class="btn btn-lg btn-primary"
+						value="Update Blog" ng-click="updateBlog(blog.blogId)"> <input
+						type="reset" class="btn btn-lg btn-default" value="Reset">
+				</div>
+			</form>
+		</div>
+	</font>
+</body>
+</html>

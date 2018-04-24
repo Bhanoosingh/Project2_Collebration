@@ -1,0 +1,18 @@
+<div class="container" ng-controller="UserController">
+	<h2>Login</h2>
+	<form>
+		<div class="form-group input-group">	
+			 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+      		<input id="loginName" type="text" class="form-control" name="email" placeholder="Enter registered email" ng-model="user.email">
+		</div>
+		<div class="form-group input-group">
+      		<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
+      		<input id="password" type="password" class="form-control" name="password" placeholder="Password" ng-model="user.password">
+    	</div>
+ 		<br>
+    	<button type="submit" class="btn btn-info" ng-click="login()">Login</button>
+		
+		<br/>
+		
+	</form>
+</div>

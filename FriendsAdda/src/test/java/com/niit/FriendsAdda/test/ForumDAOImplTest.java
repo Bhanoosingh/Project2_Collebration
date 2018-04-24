@@ -2,9 +2,12 @@ package com.niit.FriendsAdda.test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -13,29 +16,62 @@ import com.niit.FriendsAdda.model.Forum;
 
 public class ForumDAOImplTest {
 
-	private static AnnotationConfigApplicationContext context;
-	private static ForumDAO forumDAO=null;
-	
+	static Forum forum;
+	static ForumDAO forumDao;
+	@SuppressWarnings("resource")
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		context = new AnnotationConfigApplicationContext();
+	public static void init() {
+		
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.scan("com.niit");
 		context.refresh();
-		forumDAO=(ForumDAO)context.getBean("forumDAO");
-	}
-
+		forum =new Forum();
+		forumDao = (ForumDAO) context.getBean("forumDAO");
+	} 
+	
 	@Test
-	public void addForumTest() {
-		Forum nforum=new Forum();
+	public void addForumTest() throws ParseException {
+		SimpleDateFormat textFormat = new SimpleDateFormat("dd-MM-yyyy");
+		forum.setForumName("Forum-HiFiShopee");
+		forum.setUserName("bhanoosingh18");
+		forum.setForumContent("HiFiShopee forum content");
+		forum.setCreatedDate(textFormat.parse("12-04-2018"));
+		forum.setStatus("NA");
 		
-		nforum.setForumName("New Forum");
-		nforum.setCreatedate(new Date());
-		nforum.setForumContent("Forum Content");
-		nforum.setStatus("A");
-		nforum.setUsername("Bhanoo");
+		assertTrue("Problem in adding forum into the table", forumDao.addForum(forum));
 		
-		
-		assertTrue("Got some error in creating Forum", forumDAO.addForum(nforum));
 	}
 
+	@Ignore
+	@Test
+	public void updateForumTest() {
+		
+		forum=forumDao.getForum(-45);
+		forum.setForumName("Forum-Demo");
+		forum.setUserName("bhanoosingh18");
+		forum.setForumContent("This is forum content");
+		forum.setStatus("A");
+		assertTrue("Problem in updating status of forum",forumDao.updateForum(forum));
+	}
+	
+	@Ignore
+	@Test
+	public void deleteForumTest() {
+		
+		forum=forumDao.getForum(-44);
+		assertTrue("Problem in deleting forum",forumDao.deleteForum(forum));
+	}
+	
+	
+	@Test
+	public void listForumTest() {
+		List<Forum> forumList=forumDao.listForum("bhanoosingh18");
+		assertTrue("Problem in listing Forum",forumList.size()>0);
+		for(Forum f:forumList) {
+			System.out.print(f.getForumId()+"::");
+			System.out.print(f.getForumName()+"::");
+			System.out.print(f.getForumContent()+"::");
+			System.out.println(f.getUserName()+"::");
+		}
+	}
 }
